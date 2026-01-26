@@ -1,0 +1,16 @@
+-1) {
+      return res.status(404).json({ error: 'Item not found' });
+    }
+
+    items.splice(index, 1);
+    res.status(204).send(); // No content
+  } catch (error) {
+    console.error('Error deleting item:', error);
+    res.status(500).json({ error: 'Failed to delete item' });
+  }
+});
+
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
