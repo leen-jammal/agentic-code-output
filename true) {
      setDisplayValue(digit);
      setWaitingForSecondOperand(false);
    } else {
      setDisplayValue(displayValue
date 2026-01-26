@@ -1,0 +1,159 @@
+'0' ? digit : displayValue + digit);
+    }
+  };
+
+  const inputDecimal = (dot) => {
+    if (waitingForSecondOperand === true) return;
+
+    if (!displayValue.includes(dot)) {
+      setDisplayValue(displayValue + dot);
+    }
+  };
+
+  const clearDisplay = () => {
+    setDisplayValue('0');
+    setFirstOperand(null);
+    setOperator(null);
+    setWaitingForSecondOperand(false);
+  };
+
+  const handleOperator = (nextOperator) => {
+    const inputValue = parseFloat(displayValue);
+
+    if (firstOperand === null) {
+      setFirstOperand(inputValue);
+    } else if (operator) {
+      const result = performCalculation[operator](firstOperand, inputValue);
+
+      setDisplayValue(String(result));
+      setFirstOperand(result);
+    }
+
+    setWaitingForSecondOperand(true);
+    setOperator(nextOperator);
+  };
+
+
+  const performCalculation = {
+    '/': (firstOperand, secondOperand) => firstOperand / secondOperand,
+    '*': (firstOperand, secondOperand) => firstOperand * secondOperand,
+    '+': (firstOperand, secondOperand) => firstOperand + secondOperand,
+    '-': (firstOperand, secondOperand) => firstOperand - secondOperand,
+    '=': (firstOperand, secondOperand) => secondOperand,
+  };
+
+  const calculate = () => {
+    const inputValue = parseFloat(displayValue);
+
+    if (operator) {
+        const result = performCalculation[operator](firstOperand, inputValue);
+        setDisplayValue(String(result));
+        setFirstOperand(null);
+        setOperator(null);
+        setWaitingForSecondOperand(false);
+    }
+  };
+
+
+  return (
+    <div className="calculator">
+      <div className="calculator-display">
+        {displayValue}
+      </div>
+      <div className="calculator-buttons">
+        <button className="all-clear" onClick={clearDisplay}>AC</button>
+        <button className="operator" onClick={() => handleOperator('/')}>/</button>
+        <button className="operator" onClick={() => handleOperator('*')}>*</button>
+
+        <button onClick={() => inputDigit('7')}>7</button>
+        <button onClick={() => inputDigit('8')}>8</button>
+        <button onClick={() => inputDigit('9')}>9</button>
+        <button className="operator" onClick={() => handleOperator('-')}>-</button>
+
+        <button onClick={() => inputDigit('4')}>4</button>
+        <button onClick={() => inputDigit('5')}>5</button>
+        <button onClick={() => inputDigit('6')}>6</button>
+        <button className="operator" onClick={() => handleOperator('+')}>+</button>
+
+        <button onClick={() => inputDigit('1')}>1</button>
+        <button onClick={() => inputDigit('2')}>2</button>
+        <button onClick={() => inputDigit('3')}>3</button>
+
+        <button className="zero" onClick={() => inputDigit('0')}>0</button>
+        <button onClick={() => inputDecimal('.')}>.</button>
+        <button className="equals" onClick={calculate}>=</button>
+      </div>
+    </div>
+  );
+};
+
+export default Calculator;
+
+/* components/Calculator.css */
+.calculator {
+  width: 320px;
+  margin: 50px auto;
+  background-color: #212121;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.calculator-display {
+  background-color: #101010;
+  color: white;
+  text-align: right;
+  padding: 20px;
+  font-size: 2.5em;
+  font-weight: 300;
+}
+
+.calculator-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background-color: #424242;
+}
+
+.calculator-buttons button {
+  background-color: #333333;
+  color: white;
+  border: none;
+  padding: 20px;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.calculator-buttons button:hover {
+  background-color: #555555;
+}
+
+.calculator-buttons .operator {
+  background-color: #f0a23b;
+}
+
+.calculator-buttons .operator:hover {
+  background-color: #f4b466;
+}
+
+.calculator-buttons .all-clear {
+  background-color: #d9534f;
+  grid-column: 1 / 3;
+}
+
+.calculator-buttons .all-clear:hover {
+  background-color: #e3726e;
+}
+
+.calculator-buttons .zero {
+  grid-column: 1 / 3;
+}
+
+.calculator-buttons .equals {
+  background-color: #5cb85c;
+}
+
+.calculator-buttons .equals:hover {
+  background-color: #77dd77;
+}
