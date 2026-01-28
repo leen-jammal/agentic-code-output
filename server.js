@@ -1,35 +1,21 @@
 const express = require('express');
 const cors = require('cors');
-const http = require('http');
-const { Server } = require("socket.io");
+const axios = require('axios');
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "*", // Allow all origins
-    methods: ["GET", "POST"]
-  }
-});
 
 app.use(cors());
 app.use(express.json());
 
-io.on('connection', (socket) => {
-  console.log('A user connected');
-
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg); // Broadcast message to all connected clients
-  });
-
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-  });
+app.get('/api/data', async (req, res) => {
+  try {
+    const response = await axios.get('https://api.example.com/data');
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'Failed to fetch data' });
+  }
 });
-
 
 const PORT = process.env.PORT || 5000;
-
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

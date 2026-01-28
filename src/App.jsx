@@ -1,48 +1,60 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function App() {
-  const [data, setData] = useState([]);
+  const [cryptoList, setCryptoList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredCryptoList, setFilteredCryptoList] = useState([]);
 
   useEffect(() => {
-    let isMounted = true; // Flag to track if the component is mounted
-
     const fetchData = async () => {
       try {
-        const response = await fetch('https://api.example.com/data');
-      if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const json = await response.json();
-        if (isMounted) {
-          setData(json);
-        }
+        const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false');
+        setCryptoList(response.data);
       } catch (error) {
-        console.error("Could not fetch data:", error);
-        if (isMounted) {
-          setData([{error: "Failed to load data"}]);
-        }
+        console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-
-    return () => {
-      isMounted = false; // Set the flag to false when the component unmounts
-    };
   }, []);
+
+  useEffect(() => {
+    const filterCrypto = () => {
+      if (searchQuery) {
+        const filteredList = cryptoList.filter(crypto =>
+          crypto.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          crypto.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredCryptoList(filteredList);
+      } else {
+        setFilteredCryptoList(cryptoList);
+      }
+    };
+
+    filterCrypto();
+  }, [searchQuery, cryptoList]);
+
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
 
   return (
     <div className="App">
-      <h1>Data from API:</h1>
-      {data.length > 0 ? (
-        <ul>
-          {data.map((item, index) => (
-            <li key={index}>{JSON.stringify(item)}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>Loading data...</p>
-      )}
+      <h1>Crypto Tracker</h1>
+      <input
+        type="text"
+        placeholder="Search for a cryptocurrency..."
+        value={searchQuery}
+        onChange={handleSearchInputChange}
+      />
+      <ul>
+        {filteredCryptoList.map(crypto => (
+          <li key={crypto.id}>
+            {crypto.name} ({crypto.symbol.toUpperCase()}) - ${crypto.current_price}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
