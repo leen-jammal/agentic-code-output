@@ -2,9 +2,12 @@ import React from 'react';
 
 function CryptoItem({ crypto }) {
   return (
-    <li>
-      {crypto.name} ({crypto.symbol}): ${parseFloat(crypto.priceUsd).toFixed(2)}
-    </li>
+    <div className="crypto-item">
+      <h3>{crypto.name} ({crypto.symbol})</h3>
+      <p>Price (USD): {crypto.current_price}</p>
+      <p>Market Cap: {crypto.market_cap}</p>
+      {/* Add more details as needed */}
+    </div>
   );
 }
 

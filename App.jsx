@@ -1,46 +1,32 @@
 import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('https://dummyjson.com/products');
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const json = await response.json();
-        setData(json);
-      } catch (e) {
-        setError(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    // Simulate loading data
+    setTimeout(() => {
+      setData([
+        { id: 1, name: 'Item 1' },
+        { id: 2, name: 'Item 2' },
+        { id: 3, name: 'Item 3' },
+      ]);
+      setLoading(false);
+    }, 1000);
   }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
 
   return (
     <div className="App">
-      {data && data.products && data.products.map(product => (
-        <div key={product.id}>
-          <h2>{product.title}</h2>
-          <p>{product.description}</p>
-          <img src={product.thumbnail} alt={product.title} style={{ width: '100px' }} />
-        </div>
-      ))}
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul>
+          {data.map(item => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

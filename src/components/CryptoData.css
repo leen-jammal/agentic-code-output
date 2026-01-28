@@ -1,0 +1,16 @@
+.crypto-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.crypto-card h2 {
+  font-size: 1.2em;
+  margin-bottom: 5px;
+}
+
+.crypto-card p {
+  margin: 5px 0;
+}
