@@ -1,87 +1,56 @@
-import React, { useState } from 'react';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function App() {
-  const [order, setOrder] = useState({
-    name: '',
-    email: '',
-    product: '',
-    quantity: 1,
-  });
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setOrder(prevOrder => ({
-      ...prevOrder,
-      [name]: value,
-    }));
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get('/api/data');
+      setData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Placeholder for form submission logic
-    console.log('Order submitted:', order);
-    alert('Order submitted!'); // Replace with actual submission logic
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      const response = await axios.get('/api/data');
+      setData(response.data);
+    } catch (error) {
+      console.error('Error refreshing data:', error);
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Order Form</h1>
-      </header>
-      <main className="App-main">
-        <form onSubmit={handleSubmit} className="order-form">
-          <div className="form-group">
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={order.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={order.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="product">Product:</label>
-            <select
-              id="product"
-              name="product"
-              value={order.product}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select a product</option>
-              <option value="Widget">Widget</option>
-              <option value="Gadget">Gadget</option>
-              <option value="Thingamajig">Thingamajig</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label htmlFor="quantity">Quantity:</label>
-            <input
-              type="number"
-              id="quantity"
-              name="quantity"
-              value={order.quantity}
-              onChange={handleChange}
-              min="1"
-            />
-          </div>
-          <button type="submit">Submit Order</button>
-        </form>
-      </main>
+      <h1>Data from Backend</h1>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <ul>
+            {data.map(item => (
+              <li key={item.id}>{item.name}</li>
+            ))}
+          </ul>
+          <button onClick={handleRefresh} disabled={refreshing}>
+            {refreshing ? 'Refreshing...' : 'Refresh'}
+          </button>
+        </>
+      )}
     </div>
   );
 }
