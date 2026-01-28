@@ -1,59 +1,45 @@
 import React, { useState, useEffect } from 'react';
+import CryptoList from './components/CryptoList';
 import './App.css';
-import StockData from './components/StockData';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import StockList from './components/StockList';
-import StockSearch from './components/StockSearch';
-import HistoricalChart from './components/HistoricalChart';
 
 function App() {
-  const [stockSymbol, setStockSymbol] = useState('AAPL');
-  const [historicalData, setHistoricalData] = useState([]);
-
-  const handleStockSelect = (symbol) => {
-    setStockSymbol(symbol);
-  };
+  const [cryptos, setCryptos] = useState([]);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
-    const fetchHistoricalData = async () => {
-      try {
-        const apiKey = process.env.REACT_APP_API_KEY;
-        const apiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${stockSymbol}&outputsize=compact&apikey=${apiKey}`;
-        const response = await fetch(apiUrl);
-        const data = await response.json();
+    fetchData();
+  }, []);
 
-        if (data['Time Series (Daily)']) {
-          const formattedData = Object.entries(data['Time Series (Daily)']).map(([date, values]) => ({
-            date,
-            open: parseFloat(values['1. open']),
-            high: parseFloat(values['2. high']),
-            low: parseFloat(values['3. low']),
-            close: parseFloat(values['4. close']),
-            volume: parseInt(values['6. volume']),
-          })).reverse();
-          setHistoricalData(formattedData);
-        } else {
-          console.error("Error fetching historical data:", data['Error Message']);
-          setHistoricalData([]);
-        }
-      } catch (error) {
-        console.error("Error fetching historical data:", error);
-        setHistoricalData([]);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false');
+      const data = await response.json();
+      setCryptos(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
-    fetchHistoricalData();
-  }, [stockSymbol]);
+  const handleChange = e => {
+    setSearch(e.target.value);
+  };
+
+  const filteredCryptos = cryptos.filter(crypto =>
+    crypto.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="App">
-      <Header />
-      <StockSearch onStockSelect={handleStockSelect} />
-      <StockData symbol={stockSymbol} />
-      <HistoricalChart historicalData={historicalData} symbol={stockSymbol} />
-      <StockList onStockSelect={handleStockSelect} />
-      <Footer />
+      <h1>Crypto Tracker</h1>
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search a crypto"
+          className="search-input"
+          onChange={handleChange}
+        />
+      </div>
+      <CryptoList cryptos={filteredCryptos} />
     </div>
   );
 }
