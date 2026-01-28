@@ -1,10 +1,16 @@
 import React from 'react';
+import TodoItem from './TodoItem';
 
-function TodoList({ todos }) {
+function TodoList({ todos, toggleComplete, deleteTodo }) {
   return (
     <ul>
       {todos.map(todo => (
-        <li key={todo.id}>{todo.text}</li>
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          toggleComplete={toggleComplete}
+          deleteTodo={deleteTodo}
+        />
       ))}
     </ul>
   );

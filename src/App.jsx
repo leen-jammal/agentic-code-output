@@ -1,35 +1,27 @@
-import React from 'react';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 
 function App() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // Fetch data from backend (example)
+    fetch('/api/data')
+      .then(response => response.json())
+      .then(data => setData(data))
+      .catch(error => console.error("Error fetching data:", error));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Responsive Layout</h1>
-        <nav className="App-nav">
-          <a href="#">Home</a>
-          <a href="#">About</a>
-          <a href="#">Services</a>
-          <a href="#">Contact</a>
-        </nav>
-      </header>
-      <main className="App-main">
-        <section className="App-section">
-          <h2>Section 1</h2>
-          <p>This is the first section of the page.</p>
-        </section>
-        <section className="App-section">
-          <h2>Section 2</h2>
-          <p>This is the second section of the page.</p>
-        </section>
-        <section className="App-section">
-          <h2>Section 3</h2>
-          <p>This is the third section of the page.</p>
-        </section>
-      </main>
-      <footer className="App-footer">
-        <p>&copy; 2024 My Responsive App</p>
-      </footer>
+    <div className="App" style={{ fontFamily: 'Arial, sans-serif', textAlign: 'center', padding: '20px' }}>
+      <h1 style={{ color: '#333' }}>My React App</h1>
+      <p style={{ fontSize: '16px', color: '#666' }}>Data from backend:</p>
+      <ul>
+        {data.map((item, index) => (
+          <li key={index} style={{ listStyleType: 'none', marginBottom: '5px' }}>
+            {item.name} - {item.value}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

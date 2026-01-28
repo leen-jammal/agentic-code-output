@@ -1,70 +1,21 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+ul {
+  list-style: none;
   padding: 0;
-  background-color: #f4f4f4;
-  color: #333;
 }
 
-.App-header {
-  background-color: #333;
-  color: #fff;
-  padding: 1rem 0;
-  text-align: center;
-}
-
-.App-nav {
+li {
   display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 10px 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
 }
 
-.App-nav a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.App-main {
-  padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
-.App-section {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  padding: 1rem;
-  margin: 1rem;
-  width: 30%;
-  box-sizing: border-box; /* Important for padding and borders */
-}
-
-.App-footer {
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 1rem 0;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
-
-/* Media queries for responsiveness */
-@media (max-width: 768px) {
-  .App-nav {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .App-section {
-    width: 90%;
-  }
-}
-
-@media (max-width: 480px) {
-  .App-header h1 {
-    font-size: 1.5rem;
-  }
+li:last-child {
+  border-bottom: none;
 }
