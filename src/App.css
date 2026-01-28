@@ -3,36 +3,21 @@
   padding: 20px;
 }
 
-.image-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.image-container img {
-  max-width: 500px;
-  max-height: 400px;
-  margin: 0 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 5px;
-}
-
-.image-container button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
 .loading {
-  font-size: 24px;
-  margin-top: 50px;
+  font-size: 1.5em;
+  color: blue;
 }
 
 .error {
+  font-size: 1.5em;
   color: red;
-  font-size: 18px;
-  margin-top: 50px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 5px 0;
 }
