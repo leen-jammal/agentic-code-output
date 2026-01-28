@@ -1,56 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import ProductList from './components/ProductList';
-import CategoryFilter from './components/CategoryFilter';
+import React from 'react';
+import './App.css';
+import Home from './pages/Home';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 
 function App() {
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/products');
-        const data = await response.json();
-        setProducts(data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/categories');
-        const data = await response.json();
-        setCategories(data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-
-    fetchProducts();
-    fetchCategories();
-  }, []);
-
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-  };
-
-  const filteredProducts = selectedCategory
-    ? products.filter(product => product.category === selectedCategory)
-    : products;
-
-
   return (
-    <div className="App">
-      <h1>Product Catalog</h1>
-      <CategoryFilter
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onCategoryChange={handleCategoryChange}
-      />
-      <ProductList products={filteredProducts} />
-    </div>
+    <Router>
+      <div className="App">
+        <header className="App-header">
+          <h1>My Portfolio</h1>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/about">About</Link>
+              </li>
+              <li>
+                <Link to="/contact">Contact</Link>
+              </li>
+            </ul>
+          </nav>
+        </header>
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+
+        <footer className="App-footer">
+          <p>&copy; 2024 My Portfolio</p>
+        </footer>
+      </div>
+    </Router>
   );
 }
 

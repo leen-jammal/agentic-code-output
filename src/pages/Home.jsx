@@ -1,10 +1,11 @@
 import React from 'react';
+import './Home.css'; // Import the CSS file
 
 function Home() {
   return (
-    <div>
-      <h1>Welcome to My Store</h1>
-      <p>Check out our amazing products!</p>
+    <div className="home-container">
+      <h2>Welcome to My Portfolio</h2>
+      <p>This is the home page. Add your introduction and featured projects here.</p>
     </div>
   );
 }

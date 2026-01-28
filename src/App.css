@@ -1,65 +1,39 @@
-.app-container {
-  display: grid;
-  grid-template-rows: auto auto 1fr; /* Header, Input, Tasks */
-  grid-template-columns: 1fr;
-  height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-  font-family: sans-serif;
-}
-
-h1 {
+.App {
   text-align: center;
-  margin-bottom: 20px;
 }
 
-.input-section {
+.App-header {
+  background-color: #282c34;
+  min-height: 20vh;
   display: flex;
-  margin-bottom: 20px;
-}
-
-.input-section input {
-  flex-grow: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 10px;
-}
-
-.input-section button {
-  padding: 10px 15px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.input-section button:hover {
-  background-color: #0056b3;
-}
-
-.tasks-container {
-  overflow-y: auto;
-}
-
-.task-item {
-  display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-}
-
-.task-item button {
-  padding: 5px 10px;
-  border: none;
-  background-color: #dc3545;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
   color: white;
-  border-radius: 4px;
-  cursor: pointer;
+  padding: 20px;
 }
 
-.task-item button:hover {
-  background-color: #c82333;
+.App-header nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+
+.App-header nav ul li {
+  margin: 0 10px;
+}
+
+.App-header nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.App-footer {
+  background-color: #282c34;
+  color: white;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }

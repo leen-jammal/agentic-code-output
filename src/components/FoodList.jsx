@@ -1,11 +1,14 @@
 import React from 'react';
-import FoodItem from './FoodItem';
 
-function FoodList({ foods }) {
+function FoodList({ foodItems }) {
   return (
     <div className="food-list">
-      {foods.map(food => (
-        <FoodItem key={food.id} food={food} />
+      {foodItems.map(item => (
+        <div key={item.idMeal} className="food-item">
+          <h3>{item.strMeal}</h3>
+          <img src={item.strMealThumb} alt={item.strMeal} style={{ width: '200px', height: 'auto' }} />
+          <p>Category: {item.strCategory}</p>
+        </div>
       ))}
     </div>
   );

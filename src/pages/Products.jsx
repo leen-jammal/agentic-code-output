@@ -1,27 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import AddToCartButton from '../components/AddToCartButton';
 
 function Products() {
-  const [products] = useState([
-    { id: 1, name: 'Product 1', price: 20 },
-    { id: 2, name: 'Product 2', price: 30 },
-    { id: 3, name: 'Product 3', price: 40 },
-  ]);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    // Fetch products from API (replace with your actual API endpoint)
+    fetch('https://fakestoreapi.com/products')
+      .then(res => res.json())
+      .then(data => setProducts(data));
+  }, []);
 
   return (
     <div>
       <h1>Products</h1>
-      <ul>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {products.map(product => (
-          <li key={product.id}>
+          <div key={product.id} style={{ margin: '10px', padding: '10px', border: '1px solid #ccc', width: '200px' }}>
             <Link to={`/products/${product.id}`}>
-              {product.name} - ${product.price}
+              <img src={product.image} alt={product.title} style={{ maxWidth: '100px', maxHeight: '100px' }} />
+              <h3>{product.title}</h3>
+              <p>${product.price}</p>
             </Link>
-            <AddToCartButton product={product} />
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

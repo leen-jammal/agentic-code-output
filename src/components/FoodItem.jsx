@@ -1,9 +1,11 @@
 import React from 'react';
 
-function FoodItem({ item }) {
+function FoodItem({ food }) {
   return (
-    <div>
-      <p>{item.name} - {item.calories} calories</p>
+    <div className="food-item">
+      <img src={food.strMealThumb} alt={food.strMeal} />
+      <h3>{food.strMeal}</h3>
+      <button>Add to Cart</button>
     </div>
   );
 }
