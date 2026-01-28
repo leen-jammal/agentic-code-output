@@ -1,25 +1,44 @@
 import React, { useState, useEffect } from 'react';
+import './App.css';
 
 function App() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch data from backend (example)
-    fetch('/api/data')
-      .then(response => response.json())
-      .then(data => setData(data))
-      .catch(error => console.error("Error fetching data:", error));
+    async function fetchData() {
+      try {
+        const response = await fetch('/api/data');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (e) {
+        setError(e);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
   }, []);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
-    <div className="App" style={{ fontFamily: 'Arial, sans-serif', textAlign: 'center', padding: '20px' }}>
-      <h1 style={{ color: '#333' }}>My React App</h1>
-      <p style={{ fontSize: '16px', color: '#666' }}>Data from backend:</p>
+    <div className="App">
+      <h1>Data from Backend:</h1>
       <ul>
-        {data.map((item, index) => (
-          <li key={index} style={{ listStyleType: 'none', marginBottom: '5px' }}>
-            {item.name} - {item.value}
-          </li>
+        {data.map(item => (
+          <li key={item.id}>{item.name}</li>
         ))}
       </ul>
     </div>
