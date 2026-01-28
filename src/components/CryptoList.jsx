@@ -1,12 +1,11 @@
 import React from 'react';
+import CryptoItem from './CryptoItem';
 
-function CryptoList({ cryptocurrencies }) {
+function CryptoList({ cryptoData }) {
   return (
     <ul>
-      {cryptocurrencies.map(crypto => (
-        <li key={crypto.id}>
-          {crypto.name} ({crypto.symbol}): ${crypto.price}
-        </li>
+      {cryptoData.map(crypto => (
+        <CryptoItem key={crypto.id} crypto={crypto} />
       ))}
     </ul>
   );

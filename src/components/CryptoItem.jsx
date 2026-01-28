@@ -1,23 +1,12 @@
 import React from 'react';
-import './CryptoItem.css';
 
-function CryptoItem({ image, name, symbol, price, volume, priceChange }) {
+function CryptoItem({ crypto }) {
   return (
-    <div className="crypto-item">
-      <img src={image} alt={name} className="crypto-image" />
-      <div className="crypto-details">
-        <h2 className="crypto-name">{name}</h2>
-        <p className="crypto-symbol">{symbol.toUpperCase()}</p>
-      </div>
-      <div className="crypto-data">
-        <p className="crypto-price">Price: ${price}</p>
-        <p className="crypto-volume">Market Cap: ${volume.toLocaleString()}</p>
-        {priceChange < 0 ? (
-          <p className="crypto-percent red">{priceChange.toFixed(2)}%</p>
-        ) : (
-          <p className="crypto-percent green">{priceChange.toFixed(2)}%</p>
-        )}
-      </div>
+    <div className="crypto-item" style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', borderRadius: '5px' }}>
+      <h3>{crypto.name} ({crypto.symbol})</h3>
+      <p>Price: {crypto.priceUsd}</p>
+      <p>Market Cap: {crypto.marketCapUsd}</p>
+      <p>Change (24h): {crypto.changePercent24Hr}</p>
     </div>
   );
 }

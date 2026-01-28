@@ -1,11 +1,10 @@
 import React from 'react';
-import CryptoList from './components/CryptoList';
+import CryptoDashboard from './components/CryptoDashboard';
 
 function App() {
   return (
     <div className="App">
-      <h1>Cryptocurrency Tracker</h1>
-      <CryptoList />
+      <CryptoDashboard />
     </div>
   );
 }

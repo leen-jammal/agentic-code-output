@@ -8,7 +8,6 @@ function CryptoDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Replace with your actual API endpoint
         const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
@@ -17,7 +16,7 @@ function CryptoDashboard() {
         setCryptoData(data);
         setLoading(false);
       } catch (error) {
-        setError(error);
+        setError(error.message);
         setLoading(false);
       }
     };
@@ -30,32 +29,19 @@ function CryptoDashboard() {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Error: {error}</div>;
   }
 
   return (
     <div>
-      <h1>Crypto Dashboard</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Symbol</th>
-            <th>Price</th>
-            <th>Market Cap</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cryptoData.map((crypto) => (
-            <tr key={crypto.id}>
-              <td>{crypto.name}</td>
-              <td>{crypto.symbol}</td>
-              <td>${crypto.current_price}</td>
-              <td>${crypto.market_cap}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <h2>Top 10 Cryptocurrencies</h2>
+      <ul>
+        {cryptoData.map(crypto => (
+          <li key={crypto.id}>
+            {crypto.name} - ${crypto.current_price}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

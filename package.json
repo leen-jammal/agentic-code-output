@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "proj_mkxv2s5n_ugmjxujtr",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,7 +13,9 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.0"
   }
 }

@@ -1,32 +1,30 @@
 import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [cryptoData, setCryptoData] = useState([]);
 
   useEffect(() => {
-    // Simulate loading data
-    setTimeout(() => {
-      setData([
-        { id: 1, name: 'Item 1' },
-        { id: 2, name: 'Item 2' },
-        { id: 3, name: 'Item 3' },
-      ]);
-      setLoading(false);
-    }, 1000);
+    const fetchCryptoData = async () => {
+      try {
+        const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false');
+        const data = await response.json();
+        setCryptoData(data);
+      } catch (error) {
+        console.error('Error fetching crypto data:', error);
+      }
+    };
+
+    fetchCryptoData();
   }, []);
 
   return (
     <div className="App">
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <ul>
-          {data.map(item => (
-            <li key={item.id}>{item.name}</li>
-          ))}
-        </ul>
-      )}
+      <h1>Crypto Tracker</h1>
+      {cryptoData.map(crypto => (
+        <div key={crypto.id}>
+          <p>{crypto.name}: {crypto.current_price}</p>
+        </div>
+      ))}
     </div>
   );
 }

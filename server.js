@@ -1,30 +1,20 @@
 const express = require('express');
-const axios = require('axios');
 const cors = require('cors');
-
 const app = express();
+require('dotenv').config();
 
 app.use(cors());
 app.use(express.json());
 
-const apiKey = 'YOUR_API_KEY'; // Replace with your actual CoinAPI key
+const apiKey = process.env.OPENAI_API_KEY;
 
-app.get('/crypto-data', async (req, res) => {
-  try {
-    const symbolId = req.query.symbol_id || 'BTC/USD';
-    const apiUrl = `https://rest.coinapi.io/v1/exchangerate/${symbolId}`;
+if (!apiKey) {
+    console.error("OPENAI_API_KEY environment variable not set. Please set it in your .env file.");
+    process.exit(1);
+}
 
-    const response = await axios.get(apiUrl, {
-      headers: {
-        'X-CoinAPI-Key': apiKey,
-      },
-    });
-
-    res.json(response.data);
-  } catch (error) {
-    console.error('Error fetching crypto data:', error);
-    res.status(500).json({ error: 'Failed to fetch crypto data' });
-  }
+app.get('/api/apikey', (req, res) => {
+    res.json({ apiKey: apiKey });
 });
 
 
