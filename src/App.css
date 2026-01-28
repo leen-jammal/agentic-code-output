@@ -1,77 +1,11 @@
 body {
-  font-family: sans-serif;
-  background-color: #f0f0f0;
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
 }
 
-.container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
+.App {
   text-align: center;
-  margin-bottom: 20px;
-}
-
-.search-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.coin-list {
-  list-style: none;
-  padding: 0;
-}
-
-.coin-item {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-}
-
-.coin-item:last-child {
-  border-bottom: none;
-}
-
-.coin-image {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
-}
-
-.coin-name {
-  font-weight: bold;
-  margin-right: 5px;
-}
-
-.coin-symbol {
-  color: #888;
-  margin-right: 10px;
-}
-
-.coin-price {
-  margin-right: 10px;
-}
-
-.price-change {
-  font-weight: bold;
-}
-
-.price-change.positive {
-  color: green;
-}
-
-.price-change.negative {
-  color: red;
 }

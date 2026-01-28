@@ -5,20 +5,24 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <h1>Dashboard</h1>
+        <h1>Admin Dashboard</h1>
       </header>
-      <main className="dashboard-main">
+      <main className="dashboard-content">
         <section className="dashboard-section">
-          <h2>Section 1</h2>
-          <p>Content for section 1.</p>
+          <h2>Overview</h2>
+          <p>Welcome to the admin dashboard. Here you can manage your data and settings.</p>
         </section>
         <section className="dashboard-section">
-          <h2>Section 2</h2>
-          <p>Content for section 2.</p>
+          <h2>Analytics</h2>
+          <p>Data analytics will be displayed here.</p>
+        </section>
+        <section className="dashboard-section">
+          <h2>Settings</h2>
+          <p>Configure your settings here.</p>
         </section>
       </main>
       <footer className="dashboard-footer">
-        <p>&copy; 2024 Dashboard</p>
+        <p>&copy; 2024 Admin Dashboard</p>
       </footer>
     </div>
   );

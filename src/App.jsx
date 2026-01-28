@@ -2,57 +2,45 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function App() {
-  const [cryptoList, setCryptoList] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredCryptoList, setFilteredCryptoList] = useState([]);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('/api/data');
+      setData(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false');
-        setCryptoList(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+    fetchData(); // Initial data fetch
 
-    fetchData();
+    const intervalId = setInterval(() => {
+      fetchData(); // Fetch data every 5 seconds (adjust as needed)
+    }, 5000);
+
+    return () => clearInterval(intervalId); // Clean up the interval on unmount
   }, []);
 
-  useEffect(() => {
-    const filterCrypto = () => {
-      if (searchQuery) {
-        const filteredList = cryptoList.filter(crypto =>
-          crypto.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          crypto.symbol.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        setFilteredCryptoList(filteredList);
-      } else {
-        setFilteredCryptoList(cryptoList);
-      }
-    };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-    filterCrypto();
-  }, [searchQuery, cryptoList]);
-
-  const handleSearchInputChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="App">
-      <h1>Crypto Tracker</h1>
-      <input
-        type="text"
-        placeholder="Search for a cryptocurrency..."
-        value={searchQuery}
-        onChange={handleSearchInputChange}
-      />
+      <h1>Data from API:</h1>
       <ul>
-        {filteredCryptoList.map(crypto => (
-          <li key={crypto.id}>
-            {crypto.name} ({crypto.symbol.toUpperCase()}) - ${crypto.current_price}
-          </li>
+        {data.map(item => (
+          <li key={item.id}>{item.name}</li>
         ))}
       </ul>
     </div>

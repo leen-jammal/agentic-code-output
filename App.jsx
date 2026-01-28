@@ -2,44 +2,54 @@ import React, { useState, useEffect } from 'react';
 
 function App() {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [refreshRate, setRefreshRate] = useState(5000); // Default refresh rate: 5 seconds
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/api/data');
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        const jsonData = await response.json();
-        setData(jsonData);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+    // Placeholder for fetching data - replace with actual API call
+    const fetchData = () => {
+      console.log("Fetching data...");
+      // Simulate fetching data and updating state
+      setTimeout(() => {
+        const newData = [
+          { id: 1, value: Math.random() },
+          { id: 2, value: Math.random() },
+          { id: 3, value: Math.random() },
+        ];
+        setData(newData);
+      }, 1000); // Simulate API delay
     };
 
-    fetchData();
-  }, []);
+    fetchData(); // Initial fetch
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+    const intervalId = setInterval(fetchData, refreshRate);
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+    return () => clearInterval(intervalId); // Clean up interval on unmount
+  }, [refreshRate]);
+
+  const handleRefreshRateChange = (event) => {
+    setRefreshRate(parseInt(event.target.value, 10));
+  };
 
   return (
     <div className="App">
-      <h1>Data from API:</h1>
+      <h1>Data:</h1>
       <ul>
-        {data.map(item => (
-          <li key={item.id}>{item.name}</li>
+        {data.map((item) => (
+          <li key={item.id}>
+            ID: {item.id}, Value: {item.value}
+          </li>
         ))}
       </ul>
+
+      <div>
+        <label htmlFor="refreshRate">Refresh Rate (ms):</label>
+        <input
+          type="number"
+          id="refreshRate"
+          value={refreshRate}
+          onChange={handleRefreshRateChange}
+        />
+      </div>
     </div>
   );
 }

@@ -2,11 +2,12 @@ import React from 'react';
 
 function CryptoItem({ crypto }) {
   return (
-    <div className="crypto-item" style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', borderRadius: '5px' }}>
+    <div className="crypto-item">
       <h3>{crypto.name} ({crypto.symbol})</h3>
-      <p>Price: {crypto.priceUsd}</p>
-      <p>Market Cap: {crypto.marketCapUsd}</p>
-      <p>Change (24h): {crypto.changePercent24Hr}</p>
+      <p>Price: ${crypto.current_price}</p>
+      <p>Market Cap: ${crypto.market_cap}</p>
+      <p>24h Change: {crypto.price_change_percentage_24h}%</p>
+      {/* Add more details as needed */}
     </div>
   );
 }
