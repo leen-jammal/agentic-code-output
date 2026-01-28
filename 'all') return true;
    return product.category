@@ -1,0 +1,27 @@
+selectedCategory;
+  }).filter(product =>
+    product.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    let comparison = 0;
+    if (sortOption === 'name') {
+      comparison = a.title.localeCompare(b.title);
+    } else if (sortOption === 'price') {
+      comparison = a.price - b.price;
+    }
+    return order === 'asc' ? comparison : comparison * -1;
+  });
+
+
+  return (
+    <div className="App">
+      <Header cart={cart} searchTerm={searchTerm} onSearch={handleSearch} />
+      <CategoryFilter selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
+      <ProductList products={sortedProducts} onAddToCart={handleAddToCart} sortOption={sortOption} onSortChange={handleSortChange} order={order} onOrderChange={handleOrderChange}/>
+      <Footer />
+    </div>
+  );
+}
+
+export default App;

@@ -6,7 +6,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+    res.send('Hello from the backend!');
 });
 
 const PORT = process.env.PORT || 5000;

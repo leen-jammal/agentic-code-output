@@ -1,46 +1,76 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './App.css';
 
 function App() {
-  const [data, setData] = useState([]);
+  const [todos, setTodos] = useState([]);
+  const [newTodo, setNewTodo] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchData = async () => {
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  const fetchTodos = async () => {
     try {
-      const response = await axios.get('/api/data');
-      setData(response.data);
+      const response = await axios.get('/api/todos');
+      setTodos(response.data);
       setLoading(false);
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      console.error('Error fetching todos:', error);
+      setError('Failed to load todos.');
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchData(); // Initial data fetch
+  const addTodo = async () => {
+    try {
+      const response = await axios.post('/api/todos', { text: newTodo });
+      setTodos([...todos, response.data]);
+      setNewTodo('');
+    } catch (error) {
+      console.error('Error adding todo:', error);
+      setError('Failed to add todo.');
+    }
+  };
 
-    const intervalId = setInterval(() => {
-      fetchData(); // Fetch data every 5 seconds (adjust as needed)
-    }, 5000);
-
-    return () => clearInterval(intervalId); // Clean up the interval on unmount
-  }, []);
+  const deleteTodo = async (id) => {
+    try {
+      await axios.delete(`/api/todos/${id}`);
+      setTodos(todos.filter((todo) => todo._id !== id));
+    } catch (error) {
+      console.error('Error deleting todo:', error);
+      setError('Failed to delete todo.');
+    }
+  };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading todos...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="error">Error: {error}</div>;
   }
 
   return (
-    <div className="App">
-      <h1>Data from API:</h1>
-      <ul>
-        {data.map(item => (
-          <li key={item.id}>{item.name}</li>
+    <div className="container">
+      <h1>MERN To-Do App</h1>
+      <div className="input-section">
+        <input
+          type="text"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          placeholder="Add a new to-do"
+        />
+        <button onClick={addTodo}>Add</button>
+      </div>
+      <ul className="todo-list">
+        {todos.map((todo) => (
+          <li key={todo._id} className="todo-item">
+            {todo.text}
+            <button onClick={() => deleteTodo(todo._id)}>Delete</button>
+          </li>
         ))}
       </ul>
     </div>
