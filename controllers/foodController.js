@@ -1,24 +1,21 @@
-const foods = [
-    { id: 1, name: 'Burger', category: 'Meat' },
-    { id: 2, name: 'Steak', category: 'Meat' },
-    { id: 3, name: 'Chicken Salad', category: 'Salad' },
-    { id: 4, name: 'Pasta Salad', category: 'Salad' },
-    { id: 5, name: 'Salmon', category: 'Fish' },
-    { id: 6, name: 'Tuna', category: 'Fish' },
-];
+const foodData = require('../data/foodData');
 
+const getAllFoods = (req, res) => {
+  res.json(foodData);
+};
 
 const getFoodsByCategory = (req, res) => {
-    const category = req.params.category;
-    const foodsInCategory = foods.filter(food => food.category.toLowerCase() === category.toLowerCase());
+  const category = req.params.category;
+  const filteredFoods = foodData.filter(food => food.category.toLowerCase() === category.toLowerCase());
 
-    if (foodsInCategory.length > 0) {
-        res.json(foodsInCategory);
-    } else {
-        res.status(404).json({ message: 'No foods found in this category' });
-    }
+  if (filteredFoods.length > 0) {
+    res.json(filteredFoods);
+  } else {
+    res.status(404).json({ message: 'No foods found in that category' });
+  }
 };
 
 module.exports = {
-    getFoodsByCategory
+  getAllFoods,
+  getFoodsByCategory
 };

@@ -2,36 +2,38 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function App() {
-  const [items, setItems] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchItems = async () => {
+    const fetchProducts = async () => {
       try {
-        const response = await axios.get('/api/items');
-        setItems(response.data);
+        const response = await axios.get('/api/products');
+        setProducts(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching items:', error);
+        console.error('Error fetching products:', error);
         setLoading(false);
       }
     };
 
-    fetchItems();
+    fetchProducts();
   }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="App">
-      <h1>Items</h1>
-      <ul>
-        {items.map(item => (
-          <li key={item._id}>{item.name}</li>
-        ))}
-      </ul>
+      <h1>Product Catalog</h1>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul>
+          {products.map(product => (
+            <li key={product._id}>
+            {product.name} - ${product.price}
+          </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

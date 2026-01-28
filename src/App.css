@@ -1,123 +1,65 @@
-.App {
+.app-container {
+  display: grid;
+  grid-template-rows: auto auto 1fr; /* Header, Input, Tasks */
+  grid-template-columns: 1fr;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
   font-family: sans-serif;
+}
+
+h1 {
   text-align: center;
+  margin-bottom: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 70px;
+.input-section {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin-bottom: 20px;
 }
 
-.App-main {
-  display: flex;
-  padding: 20px;
-}
-
-.products {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  width: 70%;
-}
-
-.product {
-  border: 1px solid #ccc;
+.input-section input {
+  flex-grow: 1;
   padding: 10px;
-  margin: 10px;
-  width: 200px;
-}
-
-.product img {
-  width: 100%;
-  height: auto;
-}
-
-.cart {
-  width: 30%;
-  padding: 20px;
   border: 1px solid #ccc;
-}
-
-.cart-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.cart-item img {
-  width: 50px;
-  height: 50px;
+  border-radius: 4px;
   margin-right: 10px;
 }
 
-.item-details {
-  flex-grow: 1;
-}
-
-.quantity-controls {
-  display: flex;
-  align-items: center;
-}
-
-.quantity-controls button {
-  padding: 5px 10px;
-  margin: 0 5px;
-}
-
-.cart-total {
-  margin-top: 20px;
-  font-size: 1.2em;
-  font-weight: bold;
-}
-
-.App-footer {
-  background-color: #282c34;
+.input-section button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #007bff;
   color: white;
-  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.input-section button:hover {
+  background-color: #0056b3;
+}
+
+.tasks-container {
+  overflow-y: auto;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 10px;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  border-bottom: 1px solid #eee;
 }
 
-button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
+.task-item button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-button:hover {
-    opacity: 0.8;
-}
-
-.adding {
-    background-color: #008CBA;
-    animation: pulse 0.5s;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1);
-    }
+.task-item button:hover {
+  background-color: #c82333;
 }

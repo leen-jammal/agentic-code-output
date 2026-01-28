@@ -27,18 +27,33 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://cra.link/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and medium deployments, and you shouldn't feel obligated to use this feature. However we understand that sometimes you need to fine-tune more and we're here to help if you get stuck.
-
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://cra.link/create-react-app).
+You can learn more in the [Create React App documentation](https://cra.link/d
+ocs).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://cra.link/code-splitting](https://cra.link/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://cra.link/bundle-size](https://cra.link/bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://cra.link/PWA](https://cra.link/PWA)
+
+### Advanced Configuration
+
+This section has moved here: [https://cra.link/advanced-configuration](https://cra.link/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://cra.link/deployment](https://cra.link/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://cra.link/troubleshooting#npm-run-build-fails-to-minify](https://cra.link/troubleshooting#npm-run-build-fails-to-minify)
