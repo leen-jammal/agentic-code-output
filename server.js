@@ -1,18 +1,27 @@
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
+const orderRoutes = require('./routes/orderRoutes');
+
 const app = express();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('Hello from the backend!');
-});
+// MongoDB Connection
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/foodDeliveryApp';
 
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Internal Server Error', message: err.message });
-});
+mongoose.connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('MongoDB connection error:', err));
 
+// Routes
+app.use('/api/orders', orderRoutes);
+
+// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
