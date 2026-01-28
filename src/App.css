@@ -1,23 +1,40 @@
 .App {
   text-align: center;
-  padding: 20px;
 }
 
-.loading {
-  font-size: 1.5em;
-  color: blue;
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
-.error {
-  font-size: 1.5em;
-  color: red;
+.counter-container {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+.counter-button {
+  padding: 10px 20px;
+  font-size: 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  background-color: #61dafb;
+  border: none;
+  border-radius: 5px;
+  color: #282c34;
 }
 
-li {
-  margin: 5px 0;
+.counter-button:hover {
+  background-color: #47a7c7;
+}
+
+.counter-value {
+  font-size: 30px;
+  margin: 0 20px;
 }

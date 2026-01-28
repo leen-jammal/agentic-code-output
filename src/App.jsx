@@ -1,38 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './App.css';
+import React, { useState, useEffect, useCallback } from 'react';
 
 function App() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await axios('/api/items');
-        setData(result.data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/data');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    };
-
-    fetchData();
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
   if (loading) {
-    return <div className="loading">Loading data...</div>;
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div className="error">Error: {error.message}</div>;
+    return <div>Error: {error.message}</div>;
   }
 
   return (
     <div className="App">
-      <h1>Data from Backend</h1>
+      <h1>Data from Backend:</h1>
       <ul>
         {data.map(item => (
           <li key={item.id}>{item.name}</li>
