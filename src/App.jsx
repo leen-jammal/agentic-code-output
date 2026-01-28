@@ -1,78 +1,140 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './App.css';
 
 function App() {
-  const [todos, setTodos] = useState([]);
-  const [newTodo, setNewTodo] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
+  const [orderSuccess, setOrderSuccess] = useState(false);
 
   useEffect(() => {
-    fetchTodos();
+    fetchProducts();
+    loadCart();
   }, []);
 
-  const fetchTodos = async () => {
+  const fetchProducts = async () => {
     try {
-      const response = await axios.get('/api/todos');
-      setTodos(response.data);
-      setLoading(false);
+      const response = await axios.get('/api/products');
+      setProducts(response.data);
     } catch (error) {
-      console.error('Error fetching todos:', error);
-      setError('Failed to load todos.');
-      setLoading(false);
+      console.error('Error fetching products:', error);
     }
   };
 
-  const addTodo = async () => {
-    try {
-      const response = await axios.post('/api/todos', { text: newTodo });
-      setTodos([...todos, response.data]);
-      setNewTodo('');
-    } catch (error) {
-      console.error('Error adding todo:', error);
-      setError('Failed to add todo.');
+  const addToCart = (product) => {
+    const existingItem = cart.find(item => item._id === product._id);
+    if (existingItem) {
+      const updatedCart = cart.map(item =>
+        item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
+      );
+      setCart(updatedCart);
+      saveCart(updatedCart);
+    } else {
+      const updatedCart = [...cart, { ...product, quantity: 1 }];
+      setCart(updatedCart);
+      saveCart(updatedCart);
     }
   };
 
-  const deleteTodo = async (id) => {
-    try {
-      await axios.delete(`/api/todos/${id}`);
-      setTodos(todos.filter((todo) => todo._id !== id));
-    } catch (error) {
-      console.error('Error deleting todo:', error);
-      setError('Failed to delete todo.');
+  const removeFromCart = (productId) => {
+    const updatedCart = cart.filter(item => item._id !== productId);
+    setCart(updatedCart);
+    saveCart(updatedCart);
+  };
+
+  const updateQuantity = (productId, newQuantity) => {
+    if (newQuantity > 0) {
+      const updatedCart = cart.map(item =>
+        item._id === productId ? { ...item, quantity: newQuantity } : item
+      );
+      setCart(updatedCart);
+      saveCart(updatedCart);
+    } else {
+      removeFromCart(productId);
     }
   };
 
-  if (loading) {
-    return <div className="loading">Loading todos...</div>;
-  }
+  const calculateTotal = () => {
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+  };
 
-  if (error) {
-    return <div className="error">Error: {error}</div>;
-  }
+  const saveCart = (cart) => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  };
+
+  const loadCart = () => {
+    const cartData = localStorage.getItem('cart');
+    if (cartData) {
+      setCart(JSON.parse(cartData));
+    }
+  };
+
+  const submitOrder = async () => {
+    try {
+      // Implement your order submission logic here, e.g., sending the cart data to your backend
+      console.log('Order submitted:', cart);
+      // For now, let's just simulate a successful order and clear the cart
+      setCart([]);
+      saveCart([]); // Clear the cart in local storage
+      setOrderSuccess(true);
+    } catch (error) {
+      console.error('Error submitting order:', error);
+      // Handle error appropriately (e.g., display an error message)
+    }
+  };
+
+  useEffect(() => {
+    if(orderSuccess){
+      setTimeout(() => {
+        setOrderSuccess(false);
+      }, 3000);
+    }
+  }, [orderSuccess]);
+
 
   return (
-    <div className="container">
-      <h1>MERN To-Do App</h1>
-      <div className="input-section">
-        <input
-          type="text"
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-          placeholder="Add a new to-do"
-        />
-        <button onClick={addTodo}>Add</button>
-      </div>
-      <ul className="todo-list">
-        {todos.map((todo) => (
-          <li key={todo._id} className="todo-item">
-            {todo.text}
-            <button onClick={() => deleteTodo(todo._id)}>Delete</button>
-          </li>
+    <div className="App">
+      <h1>Online Store</h1>
+      <div className="products">
+        {products.map(product => (
+          <div key={product._id} className="product">
+            <h3>{product.name}</h3>
+            <p>${product.price}</p>
+            <button onClick={() => addToCart(product)}>Add to Cart</button>
+          </div>
         ))}
-      </ul>
+      </div>
+      <h2>Cart</h2>
+      {cart.length === 0 ? (
+        <p>Your cart is empty.</p>
+      ) : (
+        <>
+          <div className="cart">
+            {cart.map(item => (
+              <div key={item._id} className="cart-item">
+                <h4>{item.name}</h4>
+                <p>Price: ${item.price}</p>
+                <p>
+                  Quantity:
+                  <input
+                    type="number"
+                    value={item.quantity}
+                    min="0"
+                    onChange={(e) => updateQuantity(item._id, parseInt(e.target.value))}
+                  />
+                </p>
+                <button onClick={() => removeFromCart(item._id)}>Remove</button>
+              </div>
+            ))}
+          </div>
+          <h3>Total: ${calculateTotal()}</h3>
+          <button onClick={submitOrder}>Submit Order</button>
+        </>
+      )}
+      {orderSuccess && (
+        <div className="success-message">
+          Order placed successfully!
+        </div>
+      )}
     </div>
   );
 }

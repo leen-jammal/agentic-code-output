@@ -1,0 +1,11 @@
+.food-category-item {
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .food-category-item:hover {
+    background-color: #ddd;
+  }

@@ -1,0 +1,28 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Laptop",
+      "price": 999.99,
+      "image": "https://picsum.photos/id/1/200/150"
+    },
+    {
+      "id": 2,
+      "title": "Smartphone",
+      "price": 699.99,
+      "image": "https://picsum.photos/id/2/200/150"
+    },
+    {
+      "id": 3,
+      "title": "Tablet",
+      "price": 299.99,
+      "image": "https://picsum.photos/id/3/200/150"
+    },
+    {
+      "id": 4,
+      "title": "Headphones",
+      "price": 199.99,
+      "image": "https://picsum.photos/id/4/200/150"
+    }
+  ]
+}

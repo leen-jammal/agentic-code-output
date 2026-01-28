@@ -1,84 +1,123 @@
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-
-.container {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  max-width: 600px;
-}
-
-h1 {
+.App {
+  font-family: sans-serif;
   text-align: center;
-  color: #333;
 }
 
-.input-section {
+.App-header {
+  background-color: #282c34;
+  min-height: 70px;
   display: flex;
-  margin-bottom: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
-.input-section input[type="text"] {
-  flex: 1;
+.App-main {
+  display: flex;
+  padding: 20px;
+}
+
+.products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 70%;
+}
+
+.product {
+  border: 1px solid #ccc;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  margin: 10px;
+  width: 200px;
+}
+
+.product img {
+  width: 100%;
+  height: auto;
+}
+
+.cart {
+  width: 30%;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cart-item img {
+  width: 50px;
+  height: 50px;
   margin-right: 10px;
 }
 
-.input-section button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  cursor: pointer;
+.item-details {
+  flex-grow: 1;
 }
 
-.todo-list {
-  list-style: none;
-  padding: 0;
-}
-
-.todo-item {
-  background-color: #f9f9f9;
-  padding: 10px;
-  margin-bottom: 5px;
-  border-radius: 4px;
+.quantity-controls {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
-.todo-item button {
-  background-color: #dc3545;
-  color: white;
-  border: none;
+.quantity-controls button {
   padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
+  margin: 0 5px;
 }
 
-.loading {
-  text-align: center;
-  padding: 20px;
-  font-size: 16px;
-  color: #555;
+.cart-total {
+  margin-top: 20px;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
-.error {
+.App-footer {
+  background-color: #282c34;
+  color: white;
   text-align: center;
-  padding: 20px;
-  font-size: 16px;
-  color: red;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.adding {
+    background-color: #008CBA;
+    animation: pulse 0.5s;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }

@@ -4,11 +4,12 @@ import './FoodItem.css';
 function FoodItem({ food }) {
   return (
     <div className="food-item">
-      <img src={food.image} alt={food.name} />
-      <h3>{food.name}</h3>
-      <p>{food.description}</p>
-      <p>Price: ${food.price}</p>
-      <button>Add to Cart</button>
+      <img src={food.image} alt={food.name} className="food-image" />
+      <div className="food-details">
+        <h3 className="food-name">{food.name}</h3>
+        <p className="food-description">{food.description}</p>
+        <p className="food-price">${food.price}</p>
+      </div>
     </div>
   );
 }

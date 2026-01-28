@@ -1,12 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const orderController = require('../controllers/orderController');
 
-// Define routes for order management
-router.post('/', orderController.createOrder);
-router.get('/', orderController.getAllOrders);
-router.get('/:id', orderController.getOrderById);
-router.put('/:id', orderController.updateOrder);
-router.delete('/:id', orderController.deleteOrder);
+// @route   GET api/orders
+// @desc    Test route
+// @access  Public
+router.get('/', (req, res) => res.send('Orders Route'));
 
 module.exports = router;
