@@ -1,40 +1,70 @@
-.App {
-  text-align: center;
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: #333;
+  color: #fff;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.App-nav {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 20px;
+  padding: 10px 0;
 }
 
-.counter-container {
+.App-nav a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.App-main {
+  padding: 20px;
   display: flex;
-  align-items: center;
-  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
-.counter-button {
-  padding: 10px 20px;
-  font-size: 20px;
-  margin: 0 10px;
-  cursor: pointer;
-  background-color: #61dafb;
-  border: none;
-  border-radius: 5px;
-  color: #282c34;
+.App-section {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin: 1rem;
+  width: 30%;
+  box-sizing: border-box; /* Important for padding and borders */
 }
 
-.counter-button:hover {
-  background-color: #47a7c7;
+.App-footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 
-.counter-value {
-  font-size: 30px;
-  margin: 0 20px;
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .App-nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .App-section {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .App-header h1 {
+    font-size: 1.5rem;
+  }
 }

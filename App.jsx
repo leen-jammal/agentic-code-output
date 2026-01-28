@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [data, setData] = useState([]);
 
-  const increment = () => {
-    setCount(count + 1);
-  };
-
-  const decrement = () => {
-    setCount(count - 1);
-  };
+  useEffect(() => {
+    // You can add some initial data fetching or setup here
+    setData([
+      { id: 1, name: 'Item 1' },
+      { id: 2, name: 'Item 2' },
+    ]);
+  }, []);
 
   return (
     <div className="App">
-      <h1>Counter App</h1>
-      <p>Count: {count}</p>
-      <button onClick={increment}>Increment</button>
-      <button onClick={decrement}>Decrement</button>
+      <h1>My React App</h1>
+      <ul>
+        {data.map((item) => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }

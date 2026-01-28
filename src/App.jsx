@@ -1,46 +1,35 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
+import './App.css';
 
 function App() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const fetchData = useCallback(async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/data');
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const result = await response.json();
-      setData(result);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
   return (
     <div className="App">
-      <h1>Data from Backend:</h1>
-      <ul>
-        {data.map(item => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
+      <header className="App-header">
+        <h1>Responsive Layout</h1>
+        <nav className="App-nav">
+          <a href="#">Home</a>
+          <a href="#">About</a>
+          <a href="#">Services</a>
+          <a href="#">Contact</a>
+        </nav>
+      </header>
+      <main className="App-main">
+        <section className="App-section">
+          <h2>Section 1</h2>
+          <p>This is the first section of the page.</p>
+        </section>
+        <section className="App-section">
+          <h2>Section 2</h2>
+          <p>This is the second section of the page.</p>
+        </section>
+        <section className="App-section">
+          <h2>Section 3</h2>
+          <p>This is the third section of the page.</p>
+        </section>
+      </main>
+      <footer className="App-footer">
+        <p>&copy; 2024 My Responsive App</p>
+      </footer>
     </div>
   );
 }
