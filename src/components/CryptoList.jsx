@@ -1,11 +1,12 @@
 import React from 'react';
-import CryptoItem from './CryptoItem';
 
 function CryptoList({ cryptoData }) {
   return (
     <ul>
       {cryptoData.map(crypto => (
-        <CryptoItem key={crypto.id} crypto={crypto} />
+        <li key={crypto.id}>
+          {crypto.name} ({crypto.symbol.toUpperCase()}): ${crypto.current_price}
+        </li>
       ))}
     </ul>
   );

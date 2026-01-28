@@ -1,25 +1,48 @@
 import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [timerId, setTimerId] = useState(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-    setTimerId(id);
+    let isMounted = true; // Flag to track if the component is mounted
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://api.example.com/data');
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const json = await response.json();
+        if (isMounted) {
+          setData(json);
+        }
+      } catch (error) {
+        console.error("Could not fetch data:", error);
+        if (isMounted) {
+          setData([{error: "Failed to load data"}]);
+        }
+      }
+    };
+
+    fetchData();
 
     return () => {
-      clearInterval(id);
+      isMounted = false; // Set the flag to false when the component unmounts
     };
   }, []);
 
-  const formattedTime = currentTime.toLocaleTimeString();
-
   return (
     <div className="App">
-      <h1>Current Time: {formattedTime}</h1>
+      <h1>Data from API:</h1>
+      {data.length > 0 ? (
+        <ul>
+          {data.map((item, index) => (
+            <li key={index}>{JSON.stringify(item)}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>Loading data...</p>
+      )}
     </div>
   );
 }

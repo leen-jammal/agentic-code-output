@@ -1,30 +1,45 @@
 import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [cryptoData, setCryptoData] = useState([]);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchCryptoData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false');
-        const data = await response.json();
-        setCryptoData(data);
-      } catch (error) {
-        console.error('Error fetching crypto data:', error);
+        const response = await fetch('/api/data');
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchCryptoData();
+    fetchData();
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="App">
-      <h1>Crypto Tracker</h1>
-      {cryptoData.map(crypto => (
-        <div key={crypto.id}>
-          <p>{crypto.name}: {crypto.current_price}</p>
-        </div>
-      ))}
+      <h1>Data from API:</h1>
+      <ul>
+        {data.map(item => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }
