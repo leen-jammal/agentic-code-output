@@ -1,15 +1,15 @@
 import React from 'react';
 
-function CryptoList({ cryptocurrencies }) {
+function CryptocurrencyList({ cryptocurrencies }) {
   return (
     <ul>
       {cryptocurrencies.map(crypto => (
         <li key={crypto.id}>
-          {crypto.name} ({crypto.symbol}): ${crypto.price}
+          {crypto.name} ({crypto.symbol}): ${crypto.current_price}
         </li>
       ))}
     </ul>
   );
 }
 
-export default CryptoList;
+export default CryptocurrencyList;

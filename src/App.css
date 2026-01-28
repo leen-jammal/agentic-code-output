@@ -1,41 +1,49 @@
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
+/* App.css */
+
+.dashboard-container {
+  font-family: Arial, sans-serif;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   min-height: 100vh;
+  background-color: #f4f4f4;
 }
 
-.App {
-  width: 80%;
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+.dashboard-header {
+  background-color: #333;
+  color: white;
   text-align: center;
+  padding: 1rem 0;
 }
 
-h1 {
-  color: #2c3e50;
-  margin-bottom: 20px;
+.dashboard-content {
+  flex: 1;
+  padding: 2rem;
 }
 
-.search-container {
-  margin-bottom: 20px;
+.data-section {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.search-input {
-  padding: 10px;
-  width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
-  box-sizing: border-box; /* Ensures padding doesn't affect width */
+.data-list {
+  list-style: none;
+  padding: 0;
+}
+
+.data-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.data-item:last-child {
+  border-bottom: none;
+}
+
+.dashboard-footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
 }

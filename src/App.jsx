@@ -1,45 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import CryptoList from './components/CryptoList';
 import './App.css';
 
 function App() {
-  const [cryptos, setCryptos] = useState([]);
-  const [search, setSearch] = useState('');
+  const [data, setData] = useState([]);
 
   useEffect(() => {
+    // Placeholder data fetching - replace with actual API call
+    const fetchData = async () => {
+      setData([
+        { id: 1, name: 'Item 1', value: 10 },
+        { id: 2, name: 'Item 2', value: 20 },
+        { id: 3, name: 'Item 3', value: 30 },
+      ]);
+    };
+
     fetchData();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false');
-      const data = await response.json();
-      setCryptos(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
-  const handleChange = e => {
-    setSearch(e.target.value);
-  };
-
-  const filteredCryptos = cryptos.filter(crypto =>
-    crypto.name.toLowerCase().includes(search.toLowerCase())
-  );
-
   return (
-    <div className="App">
-      <h1>Crypto Tracker</h1>
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search a crypto"
-          className="search-input"
-          onChange={handleChange}
-        />
-      </div>
-      <CryptoList cryptos={filteredCryptos} />
+    <div className="dashboard-container">
+      <header className="dashboard-header">
+        <h1>My Dashboard</h1>
+      </header>
+      <main className="dashboard-content">
+        <section className="data-section">
+          <h2>Data Overview</h2>
+          <ul className="data-list">
+            {data.map(item => (
+              <li key={item.id} className="data-item">
+                {item.name}: {item.value}
+              </li>
+            ))}
+          </ul>
+        </section>
+      </main>
+      <footer className="dashboard-footer">
+        <p>&copy; 2024 My Dashboard</p>
+      </footer>
     </div>
   );
 }
