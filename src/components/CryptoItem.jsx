@@ -1,19 +1,9 @@
 import React from 'react';
 
-function CryptoItem({ name, symbol, price, change }) {
-  const changeColor = change >= 0 ? 'green' : 'red';
-
+function CryptoItem({ crypto }) {
   return (
-    <li style={{ 
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: '10px',
-      borderBottom: '1px solid #eee',
-    }}>
-      <span>{name} ({symbol})</span>
-      <span>${price}</span>
-      <span style={{ color: changeColor }}>{change}%</span>
+    <li>
+      {crypto.name} ({crypto.symbol}): ${parseFloat(crypto.priceUsd).toFixed(2)}
     </li>
   );
 }
