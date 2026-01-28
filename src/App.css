@@ -4,36 +4,90 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 20vh;
+  min-height: 70px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  padding: 20px;
+  margin-bottom: 20px;
 }
 
-.App-header nav ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-}
-
-.App-header nav ul li {
+nav a {
+  color: white;
+  text-decoration: none;
   margin: 0 10px;
 }
 
-.App-header nav ul li a {
-  color: white;
-  text-decoration: none;
+.products-page {
+  padding: 20px;
 }
 
-.App-footer {
-  background-color: #282c34;
-  color: white;
+.products-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.product-card {
+  border: 1px solid #ccc;
   padding: 10px;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+  margin: 10px;
+  width: 200px;
+  text-align: center;
+}
+
+.product-card img {
+  max-width: 100%;
+  height: auto;
+}
+
+.cart-page {
+  padding: 20px;
+}
+
+.cart-items {
+  list-style: none;
+  padding: 0;
+}
+
+.cart-item {
+  display: flex;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  padding: 10px;
+  align-items: center;
+}
+
+.cart-item img {
+  max-width: 80px;
+  max-height: 80px;
+  margin-right: 10px;
+}
+
+.cart-item-details {
+  flex-grow: 1;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.quantity-controls label {
+  margin-right: 5px;
+}
+
+.cart-total {
+  margin-top: 20px;
+  font-size: 1.2em;
+}
+
+.cart-item-image {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  margin-right: 10px;
 }

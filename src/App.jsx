@@ -1,42 +1,84 @@
-import React from 'react';
-import './App.css';
-import Home from './pages/Home';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import styles from './App.module.css';
 
 function App() {
+  const [todos, setTodos] = useState([]);
+  const [newTodo, setNewTodo] = useState('');
+
+  useEffect(() => {
+    fetch('http://localhost:3001/todos')
+      .then(response => response.json())
+      .then(data => setTodos(data));
+  }, []);
+
+  const addTodo = () => {
+    fetch('http://localhost:3001/todos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: newTodo, completed: false }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        setTodos([...todos, data]);
+        setNewTodo('');
+      });
+  };
+
+  const toggleTodo = (id) => {
+    const todo = todos.find(todo => todo.id === id);
+    fetch(`http://localhost:3001/todos/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ...todo, completed: !todo.completed }),
+    })
+      .then(() => {
+        setTodos(todos.map(todo =>
+          todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        ));
+      });
+  };
+
+  const deleteTodo = (id) => {
+    fetch(`http://localhost:3001/todos/${id}`, {
+      method: 'DELETE',
+    })
+      .then(() => {
+        setTodos(todos.filter(todo => todo.id !== id));
+      });
+  };
+
   return (
-    <Router>
-      <div className="App">
-        <header className="App-header">
-          <h1>My Portfolio</h1>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-              <li>
-                <Link to="/contact">Contact</Link>
-              </li>
-            </ul>
-          </nav>
-        </header>
-
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-
-        <footer className="App-footer">
-          <p>&copy; 2024 My Portfolio</p>
-        </footer>
+    <div className={styles.appContainer}>
+      <h1 className={styles.appTitle}>Todo App</h1>
+      <div className={styles.inputContainer}>
+        <input
+          type="text"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          placeholder="Add new todo"
+          className={styles.todoInput}
+        />
+        <button onClick={addTodo} className={styles.addButton}>Add</button>
       </div>
-    </Router>
+      <ul className={styles.todoList}>
+        {todos.map(todo => (
+          <li key={todo.id} className={styles.todoItem}>
+            <input
+              type="checkbox"
+              checked={todo.completed}
+              onChange={() => toggleTodo(todo.id)}
+              className={styles.todoCheckbox}
+            />
+            <span className={todo.completed ? styles.completedTodo : ''}>{todo.text}</span>
+            <button onClick={() => deleteTodo(todo.id)} className={styles.deleteButton}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

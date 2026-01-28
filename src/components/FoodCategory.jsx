@@ -3,7 +3,8 @@ import React from 'react';
 function FoodCategory({ category }) {
   return (
     <div>
-      <h3>{category.name}</h3>
+      <h2>{category.name}</h2>
+      {/* Add items related to this category here later */}
     </div>
   );
 }

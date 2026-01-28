@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const orderController = require('../controllers/orderController');
 
-// @route   GET api/orders
-// @desc    Test route
-// @access  Public
-router.get('/', (req, res) => res.send('Orders Route'));
+router.post('/', orderController.createOrder);
 
 module.exports = router;

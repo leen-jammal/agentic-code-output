@@ -5,18 +5,16 @@ function SearchBar({ onSearch }) {
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
-    onSearch(event.target.value); // Directly call onSearch on every change
+    onSearch(event.target.value);
   };
 
   return (
-    <div className="search-bar">
-      <input
-        type="text"
-        placeholder="Search for food..."
-        value={searchTerm}
-        onChange={handleChange}
-      />
-    </div>
+    <input
+      type="text"
+      placeholder="Search for food..."
+      value={searchTerm}
+      onChange={handleChange}
+    />
   );
 }
 

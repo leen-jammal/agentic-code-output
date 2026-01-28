@@ -2,15 +2,11 @@ import React from 'react';
 
 function FoodList({ foodItems }) {
   return (
-    <div className="food-list">
+    <ul>
       {foodItems.map(item => (
-        <div key={item.idMeal} className="food-item">
-          <h3>{item.strMeal}</h3>
-          <img src={item.strMealThumb} alt={item.strMeal} style={{ width: '200px', height: 'auto' }} />
-          <p>Category: {item.strCategory}</p>
-        </div>
+        <li key={item.id}>{item.name} ({item.category})</li>
       ))}
-    </div>
+    </ul>
   );
 }
 
