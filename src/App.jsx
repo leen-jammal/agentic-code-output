@@ -1,49 +1,45 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import './App.css';
 
-const App = () => {
-  const [data, setData] = useState([]);
+function App() {
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchData = useCallback(async () => {
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
     setLoading(true);
-    setError(null);
     try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/todos'); // Replace with your API endpoint
+      const response = await fetch('/api/data'); // Replace with your API endpoint
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const result = await response.json();
       setData(result);
-    } catch (error) {
-      setError(error);
+    } catch (e) {
+      setError(e.message);
     } finally {
       setLoading(false);
     }
-  }, []); // Empty dependency array means this function is only created once
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]); // fetchData is the dependency
+  };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div className="error">Error: {error}</div>;
   }
 
   return (
-    <div>
+    <div className="App">
       <h1>Data from API:</h1>
-      <ul>
-        {data.map(item => (
-          <li key={item.id}>{item.title}</li>
-        ))}
-      </ul>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
-};
+}
 
 export default App;
