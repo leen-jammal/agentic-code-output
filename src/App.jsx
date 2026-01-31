@@ -2,42 +2,45 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [results, setResults] = useState([]);
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/data'); // Replace with your API endpoint
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    const fetchData = async () => {
+      try {
+        let url = '/api/movies';
+        if (searchTerm) {
+          url += `?query=${searchTerm}`;
+        }
+        const response = await fetch(url);
+        const data = await response.json();
+        setResults(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
-      const result = await response.json();
-      setData(result);
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
-    }
+    };
+
+    fetchData();
+  }, [searchTerm]);
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
   };
-
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="error">Error: {error}</div>;
-  }
 
   return (
     <div className="App">
-      <h1>Data from API:</h1>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <h1>Movie Search</h1>
+      <input
+        type="text"
+        placeholder="Search for a movie"
+        value={searchTerm}
+        onChange={handleSearchChange}
+      />
+      <ul>
+        {results.map(movie => (
+          <li key={movie.id}>{movie.title}</li>
+        ))}
+      </ul>
     </div>
   );
 }
