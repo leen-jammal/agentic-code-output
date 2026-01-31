@@ -1,22 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import Badge from './components/Badge';
+import './App.css';
 
 function App() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate loading data
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
-
   return (
-    <div>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <p>Data loaded!</p>
-      )}
+    <div className="App">
+      <h1>My App</h1>
+      <Badge count={5} />
     </div>
   );
 }
