@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 function App() {
-  const [data, setData] = useState([]);
-
-  // Your code here
-
   return (
     <div className="App">
-      {/* Your JSX here */}
-      <h1>Welcome to My App</h1>
+      <h1>Hello, world!</h1>
     </div>
   );
 }

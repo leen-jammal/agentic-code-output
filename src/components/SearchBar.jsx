@@ -1,14 +1,16 @@
 import React from 'react';
 
-function SearchBar({ searchTerm, handleSearch }) {
+const SearchBar = ({ search, handleChange }) => {
   return (
-    <input
-      type="text"
-      placeholder="Search for a cryptocurrency"
-      value={searchTerm}
-      onChange={handleSearch}
-    />
+    <div>
+      <input
+        type="text"
+        placeholder="Search a coin"
+        value={search}
+        onChange={handleChange}
+      />
+    </div>
   );
-}
+};
 
 export default SearchBar;
