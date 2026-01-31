@@ -1,93 +1,69 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
 .App {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 70px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  background-color: #333;
   color: white;
-  margin-bottom: 20px;
-}
-
-nav a {
-  color: white;
-  text-decoration: none;
-  margin: 0 10px;
-}
-
-.products-page {
   padding: 20px;
-}
-
-.products-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.product-card {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px;
-  width: 200px;
   text-align: center;
 }
 
-.product-card img {
-  max-width: 100%;
-  height: auto;
-}
-
-.cart-page {
+.App-main {
+  flex: 1;
   padding: 20px;
 }
 
-.cart-items {
-  list-style: none;
-  padding: 0;
+.post {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
-.cart-item {
-  display: flex;
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
+.post h2 {
+  color: #333;
+  margin-top: 0;
+}
+
+.App-footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
   padding: 10px;
-  align-items: center;
 }
 
-.cart-item img {
-  max-width: 80px;
-  max-height: 80px;
-  margin-right: 10px;
-}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .App-header {
+    padding: 10px;
+  }
 
-.cart-item-details {
-  flex-grow: 1;
-}
+  .App-main {
+    padding: 10px;
+  }
 
-.quantity-controls {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
-}
+  .post {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
 
-.quantity-controls label {
-  margin-right: 5px;
-}
+  .post h2 {
+    font-size: 1.2em;
+  }
 
-.cart-total {
-  margin-top: 20px;
-  font-size: 1.2em;
-}
-
-.cart-item-image {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-  margin-right: 10px;
+  .App-footer {
+    padding: 5px;
+  }
 }

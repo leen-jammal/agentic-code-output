@@ -2,13 +2,15 @@ import React from 'react';
 
 function CryptoList({ cryptoData }) {
   return (
-    <ul>
+    <div>
       {cryptoData.map(crypto => (
-        <li key={crypto.id}>
-          {crypto.name} ({crypto.symbol.toUpperCase()}): ${crypto.current_price}
-        </li>
+        <div key={crypto.id}>
+          <img src={crypto.image} alt={crypto.name} style={{ width: '20px', height: '20px' }} />
+          <span>{crypto.name}</span>
+          <span>{crypto.current_price}</span>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 }
 

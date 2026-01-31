@@ -1,0 +1,42 @@
+.crypto-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  width: 250px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.crypto-card:hover {
+  transform: translateY(-5px);
+}
+
+.crypto-image {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.crypto-name {
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.crypto-price {
+  color: #1a73e8;
+  margin-bottom: 8px;
+}
+
+.crypto-change {
+  margin-bottom: 8px;
+}
+
+.crypto-change-percentage.positive {
+  color: green;
+}
+
+.crypto-change-percentage.negative {
+  color: red;
+}

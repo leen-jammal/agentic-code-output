@@ -1,83 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import styles from './App.module.css';
+import './App.css';
 
 function App() {
-  const [todos, setTodos] = useState([]);
-  const [newTodo, setNewTodo] = useState('');
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/todos')
-      .then(response => response.json())
-      .then(data => setTodos(data));
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const json = await response.json();
+        setData(json);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const addTodo = () => {
-    fetch('http://localhost:3001/todos', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ text: newTodo, completed: false }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        setTodos([...todos, data]);
-        setNewTodo('');
-      });
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  const toggleTodo = (id) => {
-    const todo = todos.find(todo => todo.id === id);
-    fetch(`http://localhost:3001/todos/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ...todo, completed: !todo.completed }),
-    })
-      .then(() => {
-        setTodos(todos.map(todo =>
-          todo.id === id ? { ...todo, completed: !todo.completed } : todo
-        ));
-      });
-  };
-
-  const deleteTodo = (id) => {
-    fetch(`http://localhost:3001/todos/${id}`, {
-      method: 'DELETE',
-    })
-      .then(() => {
-        setTodos(todos.filter(todo => todo.id !== id));
-      });
-  };
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
-    <div className={styles.appContainer}>
-      <h1 className={styles.appTitle}>Todo App</h1>
-      <div className={styles.inputContainer}>
-        <input
-          type="text"
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-          placeholder="Add new todo"
-          className={styles.todoInput}
-        />
-        <button onClick={addTodo} className={styles.addButton}>Add</button>
-      </div>
-      <ul className={styles.todoList}>
-        {todos.map(todo => (
-          <li key={todo.id} className={styles.todoItem}>
-            <input
-              type="checkbox"
-              checked={todo.completed}
-              onChange={() => toggleTodo(todo.id)}
-              className={styles.todoCheckbox}
-            />
-            <span className={todo.completed ? styles.completedTodo : ''}>{todo.text}</span>
-            <button onClick={() => deleteTodo(todo.id)} className={styles.deleteButton}>Delete</button>
-          </li>
+    <div className="App">
+      <header className="App-header">
+        <h1>My Blog Posts</h1>
+      </header>
+      <main className="App-main">
+        {data.map(post => (
+          <div key={post.id} className="post">
+            <h2>{post.title}</h2>
+            <p>{post.body}</p>
+          </div>
         ))}
-      </ul>
+      </main>
+      <footer className="App-footer">
+        <p>&copy; 2024 My Blog</p>
+      </footer>
     </div>
   );
 }
