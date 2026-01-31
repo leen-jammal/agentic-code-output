@@ -1,16 +1,22 @@
+/* App.css */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-.App {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
+.container {
   background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 600px;
 }
 
 h1 {
@@ -18,30 +24,94 @@ h1 {
   color: #333;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+.input-section {
+  display: flex;
+  margin-bottom: 20px;
 }
 
-th, td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+.input-section input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
-th {
-  background-color: #f2f2f2;
+.input-section button {
+  padding: 10px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
 }
 
-tr:hover {
-  background-color: #f5f5f5;
+.todo-list {
+  list-style: none;
+  padding: 0;
 }
 
-.positive {
-  color: green;
+.todo-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
 }
 
-.negative {
-  color: red;
+.todo-item:last-child {
+  border-bottom: none;
+}
+
+.todo-item input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.todo-item span {
+  flex: 1;
+}
+
+.todo-item button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.todo-item.completed span {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .container {
+    width: 95%;
+    margin: 10px;
+  }
+
+  .input-section {
+    flex-direction: column;
+  }
+
+  .input-section button {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+
+  .todo-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .todo-item span {
+    margin-top: 5px;
+  }
+
+  .todo-item button {
+    margin-left: 0;
+    margin-top: 5px;
+  }
 }
