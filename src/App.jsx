@@ -2,45 +2,50 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [results, setResults] = useState([]);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        let url = '/api/movies';
-        if (searchTerm) {
-          url += `?query=${searchTerm}`;
+        const response = await fetch('/api/data');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const response = await fetch(url);
-        const data = await response.json();
-        setResults(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
+        const result = await response.json();
+        setData(result);
+        setLastUpdated(new Date()); // Set the last updated timestamp
+      } catch (e) {
+        setError(e);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, [searchTerm]);
+  }, []);
 
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className="App">
-      <h1>Movie Search</h1>
-      <input
-        type="text"
-        placeholder="Search for a movie"
-        value={searchTerm}
-        onChange={handleSearchChange}
-      />
-      <ul>
-        {results.map(movie => (
-          <li key={movie.id}>{movie.title}</li>
-        ))}
-      </ul>
+      <h1>Data from API</h1>
+      {data && (
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      )}
+
+      {lastUpdated && (
+        <p>Last Updated: {lastUpdated.toLocaleString()}</p>
+      )}
     </div>
   );
 }
