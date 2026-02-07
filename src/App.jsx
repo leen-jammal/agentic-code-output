@@ -1,83 +1,83 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import TaskList from './components/TaskList';
+import TaskForm from './components/TaskForm';
 
 function App() {
-  const [notes, setNotes] = useState([]);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [editingNoteId, setEditingNoteId] = useState(null);
-  const [editingTitle, setEditingTitle] = useState('');
-  const [editingContent, setEditingContent] = useState('');
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true); // Added loading state
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchNotes();
+    fetchTasks();
   }, []);
 
-  const fetchNotes = async () => {
+  const fetchTasks = async () => {
+    setLoading(true); // Set loading to true when fetching starts
+    setError(null); // Clear any previous errors
     try {
-      const response = await fetch('http://localhost:3001/api/notes');
+      const response = await fetch('http://localhost:3001/tasks');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setNotes(data);
-    } catch (error) {
-      console.error("Could not fetch notes:", error);
+      setTasks(data);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false); // Set loading to false when fetching finishes
     }
   };
 
-  const createNote = async () => {
+  const addTask = async (newTask) => {
     try {
-      const response = await fetch('http://localhost:3001/api/notes', {
+      const response = await fetch('http://localhost:3001/tasks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title, content }),
+        body: JSON.stringify(newTask),
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const newNote = await response.json();
-      setNotes([...notes, newNote]);
-      setTitle('');
-      setContent('');
+      const addedTask = await response.json();
+      setTasks([...tasks, addedTask]);
     } catch (error) {
-      console.error("Could not create note:", error);
+      console.error('Error adding task:', error);
+      setError(error.message);
     }
   };
 
-  const updateNote = async () => {
+  const updateTask = async (id, updatedTask) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/notes/${editingNoteId}`, {
+      const response = await fetch(`http://localhost:3001/tasks/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title: editingTitle, content: editingContent }),
+        body: JSON.stringify(updatedTask),
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const updatedNote = await response.json();
+      const updated = await response.json();
 
-      setNotes(notes.map(note => (note._id === editingNoteId ? updatedNote : note)));
-      setEditingNoteId(null);
-      setEditingTitle('');
-      setEditingContent('');
+      setTasks(tasks.map(task => (task.id === id ? updated : task)));
     } catch (error) {
-      console.error("Could not update note:", error);
+      console.error('Error updating task:', error);
+      setError(error.message);
     }
   };
 
 
-  const deleteNote = async (id) => {
+  const deleteTask = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/notes/${id}`, {
+      const response = await fetch(`http://localhost:3001/tasks/${id}`, {
         method: 'DELETE',
       });
 
@@ -85,63 +85,30 @@ function App() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      setNotes(notes.filter(note => note._id !== id));
+      setTasks(tasks.filter(task => task.id !== id));
     } catch (error) {
-      console.error("Could not delete note:", error);
+      console.error('Error deleting task:', error);
+      setError(error.message);
     }
   };
 
 
   return (
     <div className="App">
-      <h1>Notes App</h1>
+      <h1>Task Management App</h1>
 
-      <div>
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <textarea
-          placeholder="Content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <button onClick={createNote}>Create Note</button>
-      </div>
+      <TaskForm onAddTask={addTask} />
 
-      {editingNoteId && (
-        <div>
-          <input
-            type="text"
-            placeholder="Title"
-            value={editingTitle}
-            onChange={(e) => setEditingTitle(e.target.value)}
-          />
-          <textarea
-            placeholder="Content"
-            value={editingContent}
-            onChange={(e) => setEditingContent(e.target.value)}
-          />
-          <button onClick={updateNote}>Update Note</button>
-        </div>
+      {loading && <p>Loading tasks...</p>} {/* Display loading message */}
+      {error && <p>Error: {error}</p>}       {/* Display error message */}
+
+      {!loading && !error && (
+        <TaskList
+          tasks={tasks}
+          onDeleteTask={deleteTask}
+          onUpdateTask={updateTask}
+        />
       )}
-
-      <div className="notes-grid">
-        {notes.map(note => (
-          <div key={note._id} className="note-card">
-            <h2>{note.title}</h2>
-            <p>{note.content}</p>
-            <button onClick={() => {
-              setEditingNoteId(note._id);
-              setEditingTitle(note.title);
-              setEditingContent(note.content);
-            }}>Edit</button>
-            <button onClick={() => deleteNote(note._id)}>Delete</button>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
