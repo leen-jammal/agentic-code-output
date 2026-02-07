@@ -1,24 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 
 function App() {
-  const [inputValue, setInputValue] = useState('');
-
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
-
   return (
     <div className="App">
-      <header className="App-header">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          placeholder="Enter text"
-        />
-        <p>You typed: {inputValue}</p>
-      </header>
+      <h1>My Awesome App</h1>
+      <p>This is a paragraph of text using the default typography.</p>
+      <button>Click Me</button>
     </div>
   );
 }
