@@ -1,114 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
 import TaskList from './components/TaskList';
 import TaskForm from './components/TaskForm';
+import './App.css';
 
 function App() {
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true); // Added loading state
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchTasks();
+    // Load tasks from local storage on initial load
+    const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    setTasks(storedTasks);
   }, []);
 
-  const fetchTasks = async () => {
-    setLoading(true); // Set loading to true when fetching starts
-    setError(null); // Clear any previous errors
-    try {
-      const response = await fetch('http://localhost:3001/tasks');
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setTasks(data);
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setLoading(false); // Set loading to false when fetching finishes
-    }
+  useEffect(() => {
+    // Save tasks to local storage whenever tasks change
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
+
+  const addTask = (newTask) => {
+    setTasks([...tasks, newTask]);
   };
 
-  const addTask = async (newTask) => {
-    try {
-      const response = await fetch('http://localhost:3001/tasks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newTask),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const addedTask = await response.json();
-      setTasks([...tasks, addedTask]);
-    } catch (error) {
-      console.error('Error adding task:', error);
-      setError(error.message);
-    }
+  const deleteTask = (taskId) => {
+    setTasks(tasks.filter((task) => task.id !== taskId));
   };
 
-  const updateTask = async (id, updatedTask) => {
-    try {
-      const response = await fetch(`http://localhost:3001/tasks/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedTask),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const updated = await response.json();
-
-      setTasks(tasks.map(task => (task.id === id ? updated : task)));
-    } catch (error) {
-      console.error('Error updating task:', error);
-      setError(error.message);
-    }
+  const toggleComplete = (taskId) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
-
-
-  const deleteTask = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:3001/tasks/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      setTasks(tasks.filter(task => task.id !== id));
-    } catch (error) {
-      console.error('Error deleting task:', error);
-      setError(error.message);
-    }
-  };
-
 
   return (
-    <div className="App">
-      <h1>Task Management App</h1>
-
-      <TaskForm onAddTask={addTask} />
-
-      {loading && <p>Loading tasks...</p>} {/* Display loading message */}
-      {error && <p>Error: {error}</p>}       {/* Display error message */}
-
-      {!loading && !error && (
-        <TaskList
-          tasks={tasks}
-          onDeleteTask={deleteTask}
-          onUpdateTask={updateTask}
-        />
-      )}
+    <div className="app-container">
+      <h1>Task Manager</h1>
+      <TaskForm addTask={addTask} />
+      <TaskList
+        tasks={tasks}
+        deleteTask={deleteTask}
+        toggleComplete={toggleComplete}
+      />
     </div>
   );
 }

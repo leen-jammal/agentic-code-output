@@ -1,16 +1,25 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import TaskItem from './TaskItem';
-import './TaskList.css';
 
-function TaskList() {
-  const tasks = useSelector((state) => state.tasks);
-
+function TaskList({ tasks, deleteTask, toggleComplete }) {
   return (
     <div className="task-list">
-      {tasks.map((task) => (
-        <TaskItem key={task.id} task={task} />
-      ))}
+      {tasks.length === 0 ? (
+        <p>No tasks yet.</p>
+      ) : (
+        <ul>
+          {tasks.map((task) => (
+            <li key={task.id} className={`task-item ${task.completed ? 'completed' : ''}`}>
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => toggleComplete(task.id)}
+              />
+              <span>{task.text}</span>
+              <button onClick={() => deleteTask(task.id)}>Delete</button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
