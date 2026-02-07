@@ -1,31 +1,57 @@
 import React, { useState, useEffect } from 'react';
+import TaskList from './components/TaskList';
+import AddTaskForm from './components/AddTaskForm';
 import './App.css';
 
 function App() {
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState(null);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/message')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => setMessage(data.message))
-      .catch(error => {
-        console.error("Fetching failed:", error);
-        setError("Failed to load message. Please try again later.");
-      });
+    // Simulate loading data from an API
+    setTimeout(() => {
+      setTasks([
+        { id: 1, title: 'Learn React', completed: false },
+        { id: 2, title: 'Build a To-Do App', completed: true },
+      ]);
+      setLoading(false);
+    }, 1000);
   }, []);
+
+  const addTask = (title) => {
+    const newTask = {
+      id: tasks.length + 1,
+      title,
+      completed: false,
+    };
+    setTasks([...tasks, newTask]);
+  };
+
+  const toggleComplete = (id) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
+  };
+
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
 
   return (
     <div className="App">
-      <header className="App-header">
-        {error && <div className="error">{error}</div>}
-        {message ? <p>{message}</p> : <p>Loading message...</p>}
-      </header>
+      <h1>To-Do List</h1>
+      <AddTaskForm addTask={addTask} />
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <TaskList
+          tasks={tasks}
+          toggleComplete={toggleComplete}
+          deleteTask={deleteTask}
+        />
+      )}
     </div>
   );
 }
