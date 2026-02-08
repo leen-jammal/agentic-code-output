@@ -1,14 +1,25 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import SinglePost from './components/SinglePost';
+import React, { useState, useEffect } from 'react';
+import './App.css';
 
 function App() {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/posts/:id" element={<SinglePost />} />
-      </Routes>
-    </Router>
+    <div className="App">
+      <h1>My Blog</h1>
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <textarea
+        placeholder="Content"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      />
+    </div>
   );
 }
 
