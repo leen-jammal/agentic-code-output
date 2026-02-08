@@ -1,64 +1,115 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import TaskList from './components/TaskList';
+import TaskForm from './components/TaskForm';
 
 function App() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [tasks, setTasks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [url, setUrl] = useState(''); // Add URL input state
-  const [notFound, setNotFound] = useState(false);
 
-  const fetchData = async () => {
-    setLoading(true);
-    setError(null);
-    setNotFound(false); // Reset notFound state
-
-    try {
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          setNotFound(true);
-          setData(null);
-        } else {
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch('/api/tasks');
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
-      } else {
-        const json = await response.json();
-        setData(json);
+        const data = await response.json();
+        setTasks(data);
+      } catch (e) {
+        setError(e);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (e) {
-      setError(e.message);
-      setData(null);
-    } finally {
-      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  const handleTaskCreate = async (newTask) => {
+    try {
+      const response = await fetch('/api/tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTask),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const createdTask = await response.json();
+      setTasks([...tasks, createdTask]);
+    } catch (error) {
+      console.error('Error creating task:', error);
+      setError(error); // Set error state
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    fetchData();
+
+  const handleTaskUpdate = async (updatedTask) => {
+    try {
+      const response = await fetch(`/api/tasks/${updatedTask.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedTask),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const updatedTaskFromServer = await response.json();
+
+      setTasks(
+        tasks.map((task) =>
+          task.id === updatedTaskFromServer.id ? updatedTaskFromServer : task
+        )
+      );
+    } catch (error) {
+      console.error('Error updating task:', error);
+      setError(error);
+    }
   };
+
+
+  const handleTaskDelete = async (taskId) => {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      setTasks(tasks.filter((task) => task.id !== taskId));
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      setError(error);
+    }
+  };
+
+
 
   return (
     <div className="App">
-      <h1>Data Fetcher</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          placeholder="Enter URL"
+      <h1>Task Management App</h1>
+      <TaskForm onTaskCreate={handleTaskCreate} />
+      {isLoading && <p>Loading tasks...</p>}
+      {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
+      {!isLoading && !error && (
+        <TaskList
+          tasks={tasks}
+          onTaskUpdate={handleTaskUpdate}
+          onTaskDelete={handleTaskDelete}
         />
-        <button type="submit">Fetch Data</button>
-      </form>
-
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      {notFound && <p>Error: Resource not found (404)</p>} {/* Display 404 message */}
-      {data && (
-        <pre>{JSON.stringify(data, null, 2)}</pre>
       )}
     </div>
   );
